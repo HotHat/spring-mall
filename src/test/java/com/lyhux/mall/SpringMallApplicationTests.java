@@ -1,5 +1,6 @@
 package com.lyhux.mall;
 
+import com.lyhux.mall.dto.LoginDTO;
 import com.lyhux.mall.mapper.UserMapper;
 import com.lyhux.mall.model.UserVO;
 import org.apache.ibatis.io.Resources;
@@ -54,4 +55,13 @@ class SpringMallApplicationTests {
 		}
 	}
 
+	@Test
+	void testDto() {
+		var dto = new LoginDTO();
+//		dto.setAge(123);
+//		dto.setName("nnn");
+//		dto.setPassword("123456");
+//		System.out.printf("dto:%s=%s\n", dto.getUsername(), dto.getPassword());
+		System.out.printf("dto:%s\n", dto);
+	}
 }
