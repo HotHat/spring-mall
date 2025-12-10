@@ -89,4 +89,14 @@ class SpringMallApplicationTests {
 			System.out.printf("id:%d, username:%s\n", userVO.getId(), userVO.getUsername());
 		}
 	}
+
+	@Test
+	void testSelectProvider() {
+		List<UserVO> userVOS = userMapper.getUsersByName("hello", "id desc");
+
+		for (UserVO userVO : userVOS) {
+			System.out.printf("id:%d, username:%s\n", userVO.getId(), userVO.getUsername());
+		}
+	}
+
 }
