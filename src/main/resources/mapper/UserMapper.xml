@@ -11,4 +11,9 @@
         SELECT id, username as name from user LIMIT 10
     </select>
 
+    <select id="selectUser" parameterType="int" resultMap="userVOMapper">
+        SELECT id, username as name from user WHERE id=#{id} LIMIT 1
+    </select>
+
+
 </mapper>

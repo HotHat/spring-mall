@@ -33,11 +33,11 @@ class SpringMallApplicationTests {
 		System.out.println("Test starting...");
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
-			User user = session.selectOne(
-					"com.lyhux.mall.UserMapper.selectUser", 1);
+			UserVO user = session.selectOne(
+					"com.lyhux.mall.mapper.UserMapper.selectUser", 1);
 
 			System.out.println("id:" + user.getId());
-			System.out.println("username:" + user.name());
+			System.out.println("username:" + user.getName());
 		}
 
 		System.out.println("Test ending...");
