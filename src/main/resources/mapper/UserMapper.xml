@@ -6,7 +6,7 @@
     <resultMap id="userVOMapper" type="com.lyhux.mall.model.UserVO">
     </resultMap>
     <select id="selectUsers" resultMap="userVOMapper">
-        SELECT id, username  from admin LIMIT 10
+        SELECT id, username  from admin
     </select>
 
     <select id="selectUser" parameterType="int" resultMap="userVOMapper">

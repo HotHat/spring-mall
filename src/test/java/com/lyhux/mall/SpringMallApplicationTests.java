@@ -1,5 +1,7 @@
 package com.lyhux.mall;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.lyhux.mall.dto.LoginDTO;
 import com.lyhux.mall.mapper.UserMapper;
 import com.lyhux.mall.model.UserVO;
@@ -73,5 +75,18 @@ class SpringMallApplicationTests {
 	void testPlusService() {
 		User user = userService.getById(1) ;
 		System.out.printf("admin:%s=%s\n", user.getId(), user.getUsername());
+	}
+
+	@Test
+	void testPageQuery() {
+		PageHelper.startPage(2, 1);
+		List<UserVO> userVOS = userMapper.selectUsers();
+		long total = ((Page<UserVO>) userVOS).getTotal();
+		System.out.printf("size=%d\n", userVOS.size());
+		System.out.printf("total=%d\n", total);
+
+		for (UserVO userVO : userVOS) {
+			System.out.printf("id:%d, username:%s\n", userVO.getId(), userVO.getUsername());
+		}
 	}
 }
