@@ -3,9 +3,11 @@ package com.lyhux.mall;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.lyhux.mall.dto.LoginDTO;
+import com.lyhux.mall.dto.QueryDTO;
 import com.lyhux.mall.mapper.UserMapper;
 import com.lyhux.mall.model.UserVO;
 import com.lyhux.mall.service.UserService;
+import com.lyhux.mall.service.UserTransactionService;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,9 +16,13 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -26,6 +32,9 @@ class SpringMallApplicationTests {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserTransactionService transService;
 
 	@Test
 	void contextLoads() {
@@ -99,4 +108,50 @@ class SpringMallApplicationTests {
 		}
 	}
 
+	@Test
+	void testSelectProvider2() {
+		QueryDTO dto = new QueryDTO();
+		dto.setId(1);
+		dto.setName("hello");
+		dto.setOrderBy("id desc");
+
+		List<UserVO> userVOS = userMapper.getUsersByName2(1, dto);
+
+		for (UserVO userVO : userVOS) {
+			System.out.printf("id:%d, username:%s\n", userVO.getId(), userVO.getUsername());
+		}
+	}
+
+	@Test
+	void testInsertProvider() {
+		UserVO user = new UserVO();
+		user.setUsername("add_user1");
+		LocalDateTime now = LocalDateTime.now();
+		user.setCreatedAt(now);
+		user.setUpdatedAt(now);
+
+		System.out.printf("before method return id: %d\n", user.getId());
+		int userId = userMapper.addUser(user);
+
+		System.out.printf("method return id: %d\n", userId);
+		System.out.printf("create user id: %d\n", user.getId());
+	}
+
+	@Test
+	void TestUpdateProvider() {
+		UserVO user = new UserVO();
+		user.setId(1);
+		LocalDateTime now = LocalDateTime.now();
+		user.setUpdatedAt(now);
+
+		int userId = userMapper.updateUser(user);
+		System.out.printf("return val: %d\n", userId);
+	}
+
+	@Transactional
+	@Rollback(value = false)
+	@Test
+	void TestTransaction() throws Exception {
+		transService.testTrans();
+	}
 }
