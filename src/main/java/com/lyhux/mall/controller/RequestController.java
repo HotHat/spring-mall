@@ -85,6 +85,17 @@ public class RequestController {
         return String.format("multipart file: %s", file.getOriginalFilename());
     }
 
+    @PostMapping(value = "post-file",
+            produces = MULTIPART_FORM_DATA_VALUE
+    )
+    public String postFiles(
+            @RequestParam("file") MultipartFile file) {
+//        System.out.printf("multipart meta-data: %s, file: %s", metadata.content(), file.filename());
+//        return String.format("multipart meta-data: %s, file: %s", metadata.content(), file.filename());
+        System.out.printf("multipart file: %s, %d, %s", file.getOriginalFilename(), file.getSize(), file.getContentType());
+        return "multipart file uploads success";
+    }
+
     @PostMapping(value = "post-files",
             produces = MULTIPART_FORM_DATA_VALUE
     )
