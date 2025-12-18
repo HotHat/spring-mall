@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -18,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @SpringBootTest
 public class RedisCacheTests {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisCacheTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisCacheTests.class);
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -85,7 +84,7 @@ public class RedisCacheTests {
             return (byte[]) connection.execute("PING");
         });
 
-        LOGGER.info("redis respond:" + new String(response, StandardCharsets.UTF_8));
+        logger.info("redis respond:" + new String(response, StandardCharsets.UTF_8));
     }
 
     @Test
@@ -107,9 +106,9 @@ public class RedisCacheTests {
 
         Book book = (Book) redisTemplate.opsForValue().get("book01");
         if (book != null) {
-            LOGGER.info("redis book number: {} title: {}", book.getNumber(), book.getTitle());
+            logger.info("redis book number: {} title: {}", book.getNumber(), book.getTitle());
         } else {
-            LOGGER.info("redis book empty");
+            logger.info("redis book empty");
         }
     }
 
@@ -127,9 +126,9 @@ public class RedisCacheTests {
 
         Book2 book = (Book2) redisTemplate.opsForValue().get("book02");
         if (book != null) {
-            LOGGER.info("redis book number: {} title: {}", book.getNumber(), book.getTitle());
+            logger.info("redis book number: {} title: {}", book.getNumber(), book.getTitle());
         } else {
-            LOGGER.info("redis book empty");
+            logger.info("redis book empty");
         }
     }
 }
