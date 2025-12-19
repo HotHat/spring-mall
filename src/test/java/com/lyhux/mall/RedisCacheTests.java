@@ -5,16 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
+@ActiveProfiles({"test"})
 public class RedisCacheTests {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisCacheTests.class);
@@ -24,6 +29,15 @@ public class RedisCacheTests {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Value("${server.port}")
+    private Integer port;
+
+    @Test
+    void testProperties() {
+        System.out.printf("properties value: %d", port);
+    }
+
 
     public static class Book implements Serializable {
         @Serial
@@ -98,7 +112,7 @@ public class RedisCacheTests {
         book.setNumber("no.0001");
         book.setTitle("hello");
 
-        redisTemplate.opsForValue().set("book01", book);
+        redisTemplate.opsForValue().set("book01", book, 600);
     }
 
     @Test
@@ -118,7 +132,7 @@ public class RedisCacheTests {
         book.setNumber("no.0002");
         book.setTitle("world");
 
-        redisTemplate.opsForValue().set("book02", book);
+        redisTemplate.opsForValue().set("book02", book, 600, TimeUnit.SECONDS);
     }
 
     @Test

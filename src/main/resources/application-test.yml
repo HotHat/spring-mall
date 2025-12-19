@@ -8,5 +8,14 @@ spring:
     username: root
     password: kMo@rprUq
 
+  data:
+    redis:
+      database: 2
+      host: localhost
+      port: 6379
+      password:
+      timeout: 600
+
+
 server:
   port: 8080
