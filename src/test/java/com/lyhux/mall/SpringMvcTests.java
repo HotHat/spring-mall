@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyhux.mall.controller.AuthController;
 import com.lyhux.mall.controller.RequestController;
+import com.lyhux.mall.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,11 @@ public class SpringMvcTests {
 
     @BeforeEach
     void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(
-                new AuthController()
-        ).build();
+        // this.mockMvc = MockMvcBuilders.standaloneSetup(
+        //         new AuthController()
+        // ).build();
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
 
@@ -63,5 +66,19 @@ public class SpringMvcTests {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(multipart("/res-data/post-file").file(file))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testBeanValidation() throws Exception {
+        UserDto dto = new UserDto();
+        dto.setEmail("abc..");
+        dto.setUsername("abc");
+        // dto.setPassword("123456");
+
+        this.mockMvc.perform(
+                post("/hello")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto))
+        ).andExpect(status().isOk());
     }
 }
